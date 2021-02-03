@@ -1,37 +1,37 @@
-mamba env update --file automerge/environment.yml --prefix ${NB_PYTHON_PREFIX}
+conda env update --file automerge/environment.yml --prefix ${NB_PYTHON_PREFIX}
 
-pushd automerge
-    pushd rust
+/bin/bash pushd automerge
+    /bin/bash pushd rust
         make all
         pip list | grep jupyter-rtc-automerge
-    popd
+    /bin/bash popd
 
 
     git clone https://github.com/datalayer-contrib/automerge externals/automerge-wasm-bundler
-    pushd externals/automerge-wasm-bundler
+    /bin/bash pushd externals/automerge-wasm-bundler
         git checkout wasm-bundler
-    popd
+    /bin/bash popd
 
     git clone https://github.com/datalayer-contrib/automerge externals/automerge-wasm-nodejs
-    pushd externals/automerge-wasm-nodejs
+    /bin/bash pushd externals/automerge-wasm-nodejs
         git checkout wasm-nodejs
-    popd
+    /bin/bash popd
 
     git clone https://github.com/datalayer-contrib/automerge externals/automerge && \
-    pushd externals/automerge-wasm-nodejs
+    /bin/bash pushd externals/automerge-wasm-nodejs
         git checkout performance-a262c
-    popd
+    /bin/bash popd
 
     git clone https://github.com/datalayer/jupyter-auth externals/jupyter-auth
-    pushd externals/jupyter-auth
+    /bin/bash pushd externals/jupyter-auth
         pip install -e .
         jupyter labextension develop --overwrite
-    popd
+    /bin/bash popd
 
-    pushd externals/automerge
+    /bin/bash pushd externals/automerge
         yarn
         yarn build
-    popd
+    /bin/bash popd
 
     rm -fr packages/jupyterlab-rtc/node_modules/automerge*
 	rm -fr packages/server/node_modules/automerge*
@@ -44,18 +44,18 @@ pushd automerge
     pip uninstall -y jupyter-server
 
     git clone https://github.com/datalayer-contrib/jupyter-server externals/jupyter-server
-    pushd externals/jupyter-auth
+    /bin/bash pushd externals/jupyter-auth
         git checkout sessions
         pip install -e .
-    popd
+    /bin/bash popd
 
-    pushd jupyterlab-rtc
+    /bin/bash pushd jupyterlab-rtc
         jupyter labextension develop --overwrite
         jupyter labextension list
-    popd
+    /bin/bash popd
 
-popd # take us out of automerge
+/bin/bash popd # take us out of automerge
 
 pip install doit
 
-doit
+python -m doit
